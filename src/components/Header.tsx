@@ -18,7 +18,9 @@ const links = [
 
 export function Header({ lang, t }: { lang: Lang; t: Pick<UI, "nav" | "cta"> }) {
   const pathname = usePathname() ?? `/${lang}`;
-  const isHome = pathname === `/${lang}` || pathname === `/${lang}/`;
+  // the route after the language segment; tolerant of a host prefix and of .html file names
+  const route = (pathname.replace(/\.html$/, "").match(/(?:^|\/)(?:en|ar)(\/.*)?$/)?.[1] ?? "").replace(/\/$/, "");
+  const isHome = route === "";
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [open, setOpen] = useState(false);
@@ -59,8 +61,8 @@ export function Header({ lang, t }: { lang: Lang; t: Pick<UI, "nav" | "cta"> }) 
   }, [open]);
 
   const other: Lang = lang === "en" ? "ar" : "en";
-  const otherPath = pathname.replace(new RegExp(`^/${lang}`), `/${other}`);
-  const isCurrent = (p: string) => (p === "" ? isHome : pathname.startsWith(path(lang, p)));
+  const otherPath = path(other, route);
+  const isCurrent = (p: string) => (p === "" ? isHome : route === p || route.startsWith(`${p}/`));
 
   return (
     <>
