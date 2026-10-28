@@ -61,6 +61,12 @@
       "skillPath": "skills/find-animation-opportunities/SKILL.md",
       "computedHash": "465d087c41768e4f14ed640dd049036009f613feb55baaa5831b68b33178f9d2"
     },
+    "framer-motion": {
+      "source": "schoepplake/framer-motion-skill",
+      "sourceType": "github",
+      "skillPath": "skills/framer-motion/SKILL.md",
+      "computedHash": "57dd9b9202e4883bc3b3584d71d40ac49a156f70dc58b808204d810ed1698798"
+    },
     "improve-animations": {
       "source": "emilkowalski/skill",
       "sourceType": "github",
