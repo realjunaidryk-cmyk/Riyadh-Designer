@@ -7,3 +7,7 @@ next-env.d.ts
 .taste-skill/before/
 .taste-skill/after/
 .taste-skill/inspect-ar/
+.env
+.env.local
+__pycache__/
+*.pyc

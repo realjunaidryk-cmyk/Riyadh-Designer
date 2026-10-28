@@ -1,12 +1,13 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 
-// Marks [data-reveal] elements as they enter, once. The hidden state only exists under html.js,
-// so the page reads in full without script.
+// Marks [data-reveal] elements as they enter, once per page. The hidden state only exists under html.js,
+// so everything reads in full without script.
 export function Reveals() {
+  const pathname = usePathname();
   useEffect(() => {
-    const els = document.querySelectorAll<HTMLElement>("[data-reveal]");
     const io = new IntersectionObserver(
       (entries) => {
         for (const e of entries) {
@@ -16,10 +17,18 @@ export function Reveals() {
           }
         }
       },
-      { rootMargin: "0px 0px -10% 0px" },
+      { rootMargin: "0px 0px -8% 0px" },
     );
-    els.forEach((el) => io.observe(el));
-    return () => io.disconnect();
-  }, []);
+    const observe = () =>
+      document.querySelectorAll<HTMLElement>("[data-reveal]:not(.in)").forEach((el) => io.observe(el));
+    observe();
+    // content that renders later (filters, client lists) gets observed too
+    const mo = new MutationObserver(observe);
+    mo.observe(document.body, { childList: true, subtree: true });
+    return () => {
+      io.disconnect();
+      mo.disconnect();
+    };
+  }, [pathname]);
   return null;
 }

@@ -1,96 +1,80 @@
-# Media brief — Riyadh Designer homepage
+# Media brief: Riyadh Interior Decor website
 
-Har file `public/media/` folder mein exact isi naam se daalni hai. File milte hi website us jagah drawn placeholder ki jagah asli image/video dikhayegi (rebuild ke baad). Koi file na ho to placeholder hi rehta hai — site toot-ti nahi.
+Har image `public/media/` ke andar **exact isi path aur naam** se daalni hai. File milte hi website us jagah placeholder ki jagah asli image dikhayegi (next build ke baad). Koi file na ho to saaf placeholder rehta hai, site nahi tootti. Saari images ki list ek jagah hai: `src/content/images.ts`.
 
-## One look for everything
+**Asli completed projects ki photos sabse behtar hain.** Jab tak wo nahi aati, neeche wale AI prompts use karein. AI images sirf "design concept" ke taur par dikhayi jati hain, client ke completed project ke taur par nahi.
 
-Paste this style line at the end of every prompt so all pictures belong to one family:
+## Already in place
 
-> Style: architectural interior photography, low-key, dark edges that fall into near-black, one light source — warm Riyadh sunlight entering through small triangular Najdi wall openings or a high window, soft dust in the light beam. Modern Najdi interior: hand-floated mud plaster walls in warm earth tones, athl wood beams, travertine floors, brass details, Sadu textile accents in deep red, black and bone. Calm, expensive, quiet. No people's faces, no text, no logos, no watermark. Photorealistic, 35mm, natural colour, slight film grain.
+- Hero scroll animation: client ki transformation video (`public/media/hero/`), 109 desktop + 73 mobile frames.
+- Living Room, Apartment categories aur Modern Penthouse concept: isi video se nikle stills (`public/media/stills/`).
+- Luxury Majlis category, majlis concept aur process step 5: website ke live 3D majlis ke renders (`public/media/renders/`).
 
-**Formats:** images as `.jpg`, longest side 2400px (quality 80–85). Videos as `.mp4` (H.264, no sound, 6–10 s, seamless loop, under 6 MB each) plus a `.jpg` poster with the same name (the first frame).
+## One look for every image
 
----
+Har prompt ke end mein ye line lagaayein, taaki saari images ek family lagein (hero video jaisa look):
 
-## 1. Hero — two doors (most important)
+> Photorealistic luxury interior photography, Riyadh contemporary style, warm natural daylight, palette of warm ivory, limestone, sand, walnut brown and muted bronze, marble or travertine surfaces, soft curved furniture, calm and uncluttered, eye-level wide-angle 24mm, no people, no text, no logos, no watermark.
 
-| File | Size / ratio | Prompt |
-|---|---|---|
-| `hero-homes.mp4` + `hero-homes.jpg` | 1080×1440, 3:4 portrait | Slow dolly forward into a modern Najdi villa majlis at golden hour; low seating along mud-plaster walls, a row of small triangular openings near the ceiling throwing triangles of sun across a Sadu rug; a brass dallah on a low wood table. Camera moves 1 metre in 8 seconds. |
-| `hero-work.mp4` + `hero-work.jpg` | 1080×1440, 3:4 portrait | Slow lateral track across a calm executive office in Riyadh: travertine floor, a long athl-wood desk, a mud-plaster feature wall with a vertical slot window, late-afternoon light moving across the wall, city towers dim through a sheer curtain. |
+**Format:** `.jpg`, longest side 2000–2400px, quality 80–85, under 600 KB each.
 
-## 2. Intro statement (two pictures)
+## Still needed (37 images)
 
-| File | Ratio | Prompt |
-|---|---|---|
-| `intro-opening.jpg` | 3:2 | Close-up of a triangular Najdi opening in a thick mud wall, bright sun pouring through, the beam visible in dust, the triangle of light on the floor below. |
-| `intro-plaster.jpg` | 3:2 | Raking light across hand-floated mud plaster, trowel marks visible, warm earth colour, edges falling into shadow. |
+### Services (7) — ratio 4:5 (portrait), e.g. 1600×2000
 
-## 3. Materials band (four tall panels)
+| File | Prompt |
+|---|---|
+| `services/residential.jpg` | A furnished villa living room with a curved sofa, limestone floor and tall windows. |
+| `services/commercial.jpg` | A designed office reception with a stone desk and timber wall panels. |
+| `services/kitchen.jpg` | A contemporary kitchen with a long stone island, walnut cabinets and bronze handles. |
+| `services/office.jpg` | An office floor during fit-out: new partitions, ceiling grid, clean and organised. |
+| `services/turnkey.jpg` | Material samples laid out on a table: stone, wood, fabric and plaster swatches. |
+| `services/renovation.jpg` | A room mid-renovation with fresh plaster walls, protected floor and natural light. |
+| `services/finishing.jpg` | Close view of a gypsum false ceiling with hidden LED cove and decorative wall panels. |
 
-| File | Ratio | Prompt |
-|---|---|---|
-| `mat-plaster.jpg` | 2:3 | Mud plaster wall surface, vertical crop, a sliver of sunlight crossing it. |
-| `mat-athl.jpg` | 2:3 | Looking up at athl wood beams carrying a palm-frond ceiling, light between the fronds. |
-| `mat-travertine.jpg` | 2:3 | Honed travertine floor and a step, soft side light showing the pores of the stone. |
-| `mat-sadu.jpg` | 2:3 | Sadu woven textile on a majlis cushion, red, black and bone geometric bands, side light. |
-
-## 4. Work — six projects
-
-Real project photos are best. Until then, generate one hero shot each:
+### Room categories (9)
 
 | File | Ratio | Prompt |
 |---|---|---|
-| `work-nakheel.jpg` | 3:2 | A family villa courtyard in Riyadh with a shaded loggia, palm in a planter, mud-plaster walls, evening. |
-| `work-diriyah.jpg` | 4:5 | A guest majlis with athl wood beams and mud plaster, Diriyah style, warm lamp light and a glow from triangular openings. |
-| `work-olaya.jpg` | 16:9 | Open-plan office floor in Al Olaya, travertine and oak, a long view to tall windows, dusk. |
-| `work-hittin.jpg` | 3:2 | A refined apartment living and dining room set for guests, low warm light, brass pendant over the table. |
-| `work-malqa.jpg` | 4:5 | A dental clinic waiting room that feels like a calm living room: lime-plaster walls, a long upholstered bench, soft daylight. |
-| `work-kafd.jpg` | 16:9 | A two-level furniture showroom with a sculptural stair, display pieces lit like exhibits in a dark space. |
+| `categories/bedroom.jpg` | 4:5 | A calm bedroom with an upholstered headboard wall and warm indirect light. |
+| `categories/kitchen.jpg` | 4:3 | A kitchen with a stone island and pendant lights. |
+| `categories/bathroom.jpg` | 4:5 | A stone bathroom with a freestanding tub and soft lighting. |
+| `categories/home-office.jpg` | 1:1 | A home office with a timber desk, bookshelves and daylight. |
+| `categories/dining.jpg` | 4:3 | A dining room set for guests, long table, statement chandelier. |
+| `categories/closet.jpg` | 4:5 | A walk-in closet with lit shelving and a central island. |
+| `categories/villa.jpg` | 4:3 | A double-height villa entrance hall with a sculptural staircase. |
+| `categories/office.jpg` | 4:3 | An executive office interior with city view. |
+| `categories/hospitality.jpg` | 4:5 | A hotel-style reception lounge with stone and brass details. |
 
-## 5. Walkthrough films — ten vertical reels
+### Project concepts (16) — 4 per project
 
-All `9:16`, 1080×1920, 6–8 s, slow camera, seamless loop. Name them `reel-01.mp4` … `reel-10.mp4`, each with a `.jpg` poster (`reel-01.jpg` …).
+| Files | Prompts |
+|---|---|
+| `projects/villa-hero.jpg` (16:9), `villa-1.jpg` (1:1), `villa-2.jpg` (4:5), `villa-3.jpg` (16:9) | Contemporary villa: reception hall; family living room; oak staircase on limestone floor; shaded courtyard seen from the living room. |
+| `projects/bedroom-hero.jpg` (16:9), `bedroom-1.jpg` (1:1), `bedroom-2.jpg` (4:5), `bedroom-3.jpg` (16:9) | Minimalist master bedroom: wide view with upholstered wall; bedside detail with warm light; flush wardrobe wall; seating by the window. |
+| `projects/kitchen-hero.jpg` (16:9), `kitchen-1.jpg` (1:1), `kitchen-2.jpg` (4:5), `kitchen-3.jpg` (16:9) | Designer kitchen: long quartzite island; walnut cabinet detail; display shelving with bronze handles; prep kitchen behind a pocket door. |
+| `projects/office-hero.jpg` (16:9), `office-1.jpg` (1:1), `office-2.jpg` (4:5), `office-3.jpg` (16:9) | Executive office: reception with travertine desk; boardroom with acoustic ceiling; oak and glass partitions; executive office overlooking the city. |
 
-1. Courtyard at dusk · 2. Majlis, morning · 3. Dining room · 4. Office reception · 5. Primary bedroom · 6. Clinic waiting room · 7. Kitchen island · 8. Showroom stair · 9. Guest bathroom · 10. Roof terrace
+### About and process (5) — ratio 4:5
 
-Prompt pattern: *"Vertical 9:16 slow gimbal shot moving through a [room] in a modern Najdi-style Riyadh home, [time of day] light, mud plaster, travertine and athl wood, no people."*
+| File | Prompt |
+|---|---|
+| `about/studio.jpg` | A design studio table with material samples, drawings and a laptop, daylight. |
+| `process/1.jpg` | A consultation in a client's living room: plans on a coffee table, two cups of coffee. |
+| `process/2.jpg` | A moodboard with fabric, stone and colour samples. |
+| `process/3.jpg` | A floor plan drawing with a furniture layout and a pencil. |
+| `process/4.jpg` | Finish samples: tiles, wood, paint chips and fabrics arranged on a table. |
 
-## 6. How a project runs — seven steps
+## Also needed from the client
 
-All `4:5`: `process-1.jpg` … `process-7.jpg`
+These are left empty on purpose until confirmed (nothing invented on the site):
 
-1. Designer's hands with a tape measure and a light meter on a bare site, morning light.
-2. A meeting table with plans, coffee cups and a dallah, seen from above.
-3. Material samples laid out: plaster swatches, wood, stone, Sadu fabric.
-4. A laptop on a studio desk showing a 3D render of a majlis, dark studio.
-5. Technical drawings and a joinery detail on paper, a pencil, side light.
-6. A construction site interior with scaffolding and fresh plaster, dust in the light.
-7. A finished, styled majlis with a key on a brass tray.
+- **Logo** (SVG or PNG). The header currently uses a text wordmark.
+- **Email address** (the audit says to correct and verify it).
+- **Office address** if visitors can come to the studio. Right now the site shows "Riyadh, Saudi Arabia".
+- **Social media links**: Facebook, Instagram, LinkedIn, TikTok, X.
+- **Official Arabic company name**. It is written as "رياض إنتيريور ديكور" for now.
+- **Real completed projects**: photos and a short description each, to replace the concepts.
+- **Domain name**, **GA4 Measurement ID** and **Google Search Console verification code** (see README).
 
-## 7. Before you call (FAQ)
-
-| File | Ratio | Prompt |
-|---|---|---|
-| `faq-tall.jpg` | 3:4 | Corner of a majlis in evening light, cushions, a brass lamp, a triangular opening glowing. |
-| `faq-square.jpg` | 1:1 | Detail of a carved and painted Najdi wooden door, geometric triangles. |
-
-## 8. Contact
-
-| File | Ratio | Prompt |
-|---|---|---|
-| `contact-street.jpg` | 16:9 (2400×1350) | A quiet street in Al Olaya, Riyadh, at blue hour, the studio's lit window on the left; keep the upper-right third calm (the visit card sits there). |
-
----
-
-## Optional — 3D
-
-The "Drawn with the sun" majlis is built in code already (no file needed). If you later have a real project as a `.glb` 3D model (from your 3D software or an AI 3D tool), send it and it can replace or sit beside this room.
-
-## Content to confirm before launch
-
-Sample text, written so the design shows at full density. Replace with real facts:
-- Project names and descriptions (Al Nakheel Villa, Diriyah Majlis, Olaya Offices, Hittin Apartment, Al Malqa Clinic, KAFD Showroom).
-- Address (King Fahd Road, Al Olaya), phone `+966 11 000 0000`, WhatsApp link, email `hello@riyadhdesigner.sa`, opening hours.
-- Social links (Instagram, Pinterest, LinkedIn currently point to `#`).
-- FAQ answers (timelines, cities served, fee method).
+Edit these in `src/content/site.ts`.

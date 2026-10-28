@@ -24,7 +24,7 @@ export async function createMajlis(host: HTMLElement, date: Date) {
   renderer.domElement.setAttribute("aria-hidden", "true");
 
   const scene = new THREE.Scene();
-  scene.background = new THREE.Color("#0d1110");
+  scene.background = new THREE.Color("#241c17");
 
   const camera = new THREE.PerspectiveCamera(42, 16 / 9, 0.1, 60);
   const camHome = new THREE.Vector3(0.6, 1.55, 6.6);

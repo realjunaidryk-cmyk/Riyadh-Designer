@@ -1,11 +1,31 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import type { Dictionary, Lang } from "@/content/dictionary";
+import type { Lang } from "@/content/site";
 import { dayTimes, formatClock, riyadhNow } from "@/lib/sun";
-import { Placeholder } from "./Media";
 
 type FinishId = "plaster" | "travertine" | "athl" | "lime";
+
+const copy = {
+  en: {
+    time: "Time in Riyadh",
+    finish: "Wall finish",
+    sunrise: "Sunrise",
+    noon: "Noon",
+    sunset: "Sunset",
+    label: "A 3D majlis with triangular openings. The light moves with the time you choose.",
+    finishes: { plaster: "Mud plaster", travertine: "Travertine", athl: "Timber", lime: "White lime" },
+  },
+  ar: {
+    time: "الوقت في الرياض",
+    finish: "تشطيب الجدار",
+    sunrise: "الشروق",
+    noon: "الظهر",
+    sunset: "الغروب",
+    label: "مجلس ثلاثي الأبعاد بفتحات مثلثة. يتحرك الضوء مع الوقت الذي تختاره.",
+    finishes: { plaster: "لياسة طينية", travertine: "ترافرتين", athl: "خشب", lime: "جير أبيض" },
+  },
+};
 
 const swatches: Record<FinishId, string> = {
   plaster: "#b48a62",
@@ -14,27 +34,23 @@ const swatches: Record<FinishId, string> = {
   lime: "#e7e2d7",
 };
 
-type SceneApi = {
-  setSun: (minutes: number) => void;
-  setFinish: (id: FinishId) => void;
-  dispose: () => void;
-};
+type SceneApi = { setSun: (m: number) => void; setFinish: (id: FinishId) => void; dispose: () => void };
 
-export function LightRoom({ t, lang }: { t: Dictionary["light"]; lang: Lang }) {
+// A live 3D majlis lit by the real sun path over Riyadh for today's date.
+export function LightRoom({ lang, initialFinish = "plaster" }: { lang: Lang; initialFinish?: FinishId }) {
+  const t = copy[lang];
   const host = useRef<HTMLDivElement>(null);
   const api = useRef<SceneApi | null>(null);
   const today = useMemo(() => new Date(), []);
   const times = useMemo(() => dayTimes(today), [today]);
   const min = Math.ceil(times.sunrise + 10);
   const max = Math.floor(times.sunset - 10);
-
   const [minutes, setMinutes] = useState(() => Math.round((times.noon + max) / 2));
-  const [finish, setFinish] = useState<FinishId>("plaster");
-  const [webgl, setWebgl] = useState<"pending" | "on" | "off">("pending");
-  const swept = useRef(false);
+  const [finish, setFinish] = useState<FinishId>(initialFinish);
+  const [on, setOn] = useState(false);
   const touched = useRef(false);
+  const swept = useRef(false);
 
-  // Build the scene once the section is near the viewport.
   useEffect(() => {
     const el = host.current;
     if (!el) return;
@@ -49,9 +65,9 @@ export function LightRoom({ t, lang }: { t: Dictionary["light"]; lang: Lang }) {
           api.current = await createMajlis(el, today);
           api.current.setFinish(finish);
           api.current.setSun(minutes);
-          setWebgl("on");
+          setOn(true);
         } catch {
-          setWebgl("off");
+          setOn(false);
         }
       },
       { rootMargin: "400px 0px" },
@@ -66,10 +82,9 @@ export function LightRoom({ t, lang }: { t: Dictionary["light"]; lang: Lang }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // The signature move: when the room first comes into view, the sun crosses from morning to now.
+  // when the room first comes into view, the sun travels from morning to the time it is now in Riyadh
   useEffect(() => {
-    if (webgl !== "on") return;
-    const el = host.current!;
+    if (!on) return;
     const now = riyadhNow();
     const target = now > min + 30 && now < max - 10 ? now : Math.round(times.noon + 200);
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -78,58 +93,35 @@ export function LightRoom({ t, lang }: { t: Dictionary["light"]; lang: Lang }) {
         if (!entries[0].isIntersecting || swept.current) return;
         swept.current = true;
         io.disconnect();
-        if (reduce || touched.current) {
-          setMinutes(target);
-          return;
-        }
+        if (reduce || touched.current) return setMinutes(target);
         const from = min + 20;
         const start = performance.now();
-        const dur = 2600;
         const step = (time: number) => {
           if (touched.current) return;
-          const k = Math.min(1, (time - start) / dur);
-          const e = 1 - Math.pow(1 - k, 4);
-          setMinutes(Math.round(from + (target - from) * e));
+          const k = Math.min(1, (time - start) / 2600);
+          setMinutes(Math.round(from + (target - from) * (1 - Math.pow(1 - k, 4))));
           if (k < 1) requestAnimationFrame(step);
         };
         requestAnimationFrame(step);
       },
       { threshold: 0.45 },
     );
-    io.observe(el);
+    io.observe(host.current!);
     return () => io.disconnect();
-  }, [webgl, min, max, times.noon]);
+  }, [on, min, max, times.noon]);
 
-  useEffect(() => {
-    api.current?.setSun(minutes);
-  }, [minutes]);
-
-  useEffect(() => {
-    api.current?.setFinish(finish);
-  }, [finish]);
+  useEffect(() => api.current?.setSun(minutes), [minutes]);
+  useEffect(() => api.current?.setFinish(finish), [finish]);
 
   const clock = formatClock(minutes, lang);
-  const pct = (v: number) => `${((v - min) / (max - min)) * 100}%`;
 
   return (
-    <section className="light section" id="light" aria-labelledby="light-title">
-      <div className="light-head">
-        <h2 className="head" id="light-title" data-reveal>
-          {t.title}
-        </h2>
-        <p data-reveal style={{ ["--i" as string]: 1 }}>
-          {t.text}
-        </p>
-      </div>
-
-      <div className="room" ref={host} role="img" aria-label={t.canvasLabel} data-reveal="wipe">
-        {webgl !== "on" && <Placeholder seed={3} ratio={16 / 9} label={t.canvasLabel} />}
-      </div>
-
+    <div>
+      <div className="room" ref={host} role="img" aria-label={t.label} />
       <div className="room-controls">
         <div>
           <label className="control-label" htmlFor="sun-time">
-            <span>{t.timeLabel}</span>
+            <span>{t.time}</span>
             <output className="clock" htmlFor="sun-time" dir="ltr">
               {clock}
             </output>
@@ -140,7 +132,6 @@ export function LightRoom({ t, lang }: { t: Dictionary["light"]; lang: Lang }) {
             type="range"
             min={min}
             max={max}
-            step={1}
             value={minutes}
             aria-valuetext={clock}
             dir="ltr"
@@ -153,7 +144,7 @@ export function LightRoom({ t, lang }: { t: Dictionary["light"]; lang: Lang }) {
             <span>
               {t.sunrise} {formatClock(times.sunrise, lang)}
             </span>
-            <span style={{ position: "relative", left: `calc(${pct(times.noon)} - 50%)` }}>
+            <span>
               {t.noon} {formatClock(times.noon, lang)}
             </span>
             <span>
@@ -163,25 +154,18 @@ export function LightRoom({ t, lang }: { t: Dictionary["light"]; lang: Lang }) {
         </div>
         <div>
           <span className="control-label" id="finish-label">
-            {t.finishLabel}
+            {t.finish}
           </span>
           <div className="chips" role="group" aria-labelledby="finish-label">
-            {t.finishes.map((f) => (
-              <button
-                key={f.id}
-                type="button"
-                className="chip"
-                aria-pressed={finish === f.id}
-                onClick={() => setFinish(f.id as FinishId)}
-              >
-                <span className="swatch" style={{ ["--swatch" as string]: swatches[f.id as FinishId] }} />
-                {f.label}
+            {(Object.keys(swatches) as FinishId[]).map((id) => (
+              <button key={id} type="button" className="chip" aria-pressed={finish === id} onClick={() => setFinish(id)}>
+                <span className="swatch" style={{ ["--swatch" as string]: swatches[id] }} />
+                {t.finishes[id]}
               </button>
             ))}
           </div>
         </div>
       </div>
-      <p className="light-note">{t.note}</p>
-    </section>
+    </div>
   );
 }
